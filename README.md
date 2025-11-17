@@ -66,11 +66,60 @@ spec:
       nodePort: 30080 # optional; pick any free port in 30000–32767
 ```
 
+Save as `redis-deploy-service/yaml`
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  labels:
+    app: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+        - name: redis
+          image: redis:7
+          ports:
+            - containerPort: 6379
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+  labels:
+    app: redis
+spec:
+  type: ClusterIP
+  selector:
+    app: redis
+  ports:
+    - port: 6379
+      targetPort: 6379
+      protocol: TCP
+
+```
+
 Apply & verify:
 
 ```bash
 kubectl apply -f hellodocker-deploy.yaml
 kubectl apply -f hellodocker-service.yaml
+kubectl apply -f redis-deploy-service.yaml
 kubectl rollout status deployment/hellodocker
 kubectl get pods -l app=hellodocker -o wide
 kubectl get svc hellodocker-nodeport
@@ -94,7 +143,5 @@ curl http://$MINIKUBE_IP:30080
 ```bash
 kubectl delete -f hellodocker-deploy.yaml
 kubectl delete -f hellodocker-service.yaml
-# or, if you used the one-liners:
-kubectl delete svc hellodocker-nodeport
-kubectl delete deploy hellodocker
+kubectl delete -f redis-deploy-service.yaml
 ```
