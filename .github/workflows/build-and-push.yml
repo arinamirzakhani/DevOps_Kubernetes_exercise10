@@ -45,7 +45,7 @@ jobs:
           OLD_IMAGE=${{ env.IMAGE_NAME }}:latest
           NEW_IMAGE=${{ env.IMAGE_NAME }}:${{ github.sha }}
           echo "START Updating $FILE with image $NEW_IMAGE in file $FILE"
-          sed -i "s/$OLD_IMAGE/$NEW_IMAGE/g" "$FILE"
+          sed -i "s|$OLD_IMAGE|$NEW_IMAGE|g" "$FILE"
           echo "DONE Updating $FILE with image $NEW_IMAGE"
 
       - name: Commit and push changes
