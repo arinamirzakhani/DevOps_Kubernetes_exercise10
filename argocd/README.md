@@ -44,10 +44,11 @@ Argo CD will:
 
 You can then open the Argo CD UI (port-forward example):
 
-```kubectl port-forward svc/argocd-server -n argocd 8080:443```
+```kubectl port-forward svc/argocd-server -n argocd 8089:443```
 
-Then go to: <https://localhost:8080> in your browser
+Then go to: <https://localhost:8089> in your browser
 
 
 # References
 - https://medium.com/@veerababu.narni232/a-complete-overview-of-argocd-with-a-practical-example-f4a9a8488cf9
+- https://medium.com/@muppedaanvesh/a-hands-on-guide-to-argocd-on-kubernetes-part-1-%EF%B8%8F-7a80c1b0ac98
